@@ -1,9 +1,6 @@
 #download the following dependencies: flask, authlib.integrations.flask_client, google-api-python-client, google-auth-httplib2, google-auth-oauthlib
 #we will be requesting from the browser: http://localhost:5000 (this is the authorized javascript origin)
 
-
-
-
 import os
 import flask
 import requests
@@ -15,7 +12,7 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-var_name = os.getenv('SECRET_KEY')
+app.secret_key = os.getenv('SECRET_KEY')
 CLIENT_SECRETS_FILE = '.credentials.json'
 
 SCOPES = ['https://www.googleapis.com/auth/calendar'] #this scope will allow PMI to read the user's calendar events as well as put in new event
@@ -24,7 +21,6 @@ API_VERSION = 'v3'
     
 
 app = flask.Flask(__name__) 
-app.secret_key = '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' #TODO: once app is in production, keep the secret key in a separate file
 
 @app.route('/')
 def index():
