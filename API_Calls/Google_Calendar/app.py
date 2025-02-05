@@ -12,15 +12,15 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-app.secret_key = os.getenv('SECRET_KEY')
 CLIENT_SECRETS_FILE = '.credentials.json'
 
 SCOPES = ['https://www.googleapis.com/auth/calendar'] #this scope will allow PMI to read the user's calendar events as well as put in new event
 API_SERVICE_NAME = 'calendar'
 API_VERSION = 'v3'
-    
+
 
 app = flask.Flask(__name__) 
+app.secret_key = os.getenv("SECRET_KEY")
 
 @app.route('/')
 def index():
