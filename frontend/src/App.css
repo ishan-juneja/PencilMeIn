@@ -1,8 +1,6 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  padding: 1rem;
 }
 
 .logo {
@@ -11,4 +9,21 @@
   left: 2vw;  /* 2% of viewport width from the left */
   width: 5vw; /* 5% of the viewport width */
   height: auto; /* Maintaining aspect ratio */
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 14vh;
+  margin-left: 4vw;
+}
+
+.pencil-me-in {
+  font-size: 1.25rem;
+  color: #5973DE;
+} 
+
+.event-name-input {
+  height: 5vh;
+  width: 90vw;
 }

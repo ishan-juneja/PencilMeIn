@@ -9,7 +9,14 @@ function App() {
   return (
     <>
     <img src={logo} alt="Pencil Me In Logo" className="logo" />
-    <h3>Pencil Me In.</h3>
+    <div className="form-container">
+      <h3 className="pencil-me-in">Pencil Me In.</h3>
+      <input 
+        type="text"
+        className = "event-name-input"
+        placeholder="Enter Event Name" 
+      />
+      </div>
     </>
   )
 }
