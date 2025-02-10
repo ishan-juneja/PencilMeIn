@@ -57,34 +57,43 @@ def google_authorize():
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(CLIENT_SECRETS_FILE, scopes=SCOPES)
     #the URI created here will match the authorized redirect URI from the OAuth 2.0 client configuration in the Google Cloud Console
     flow.redirect_uri = flask.url_for('oauth2callback', _external=True)
-
+    print("This is the uri " + flow.redirect_uri)
     authorization_url, state = flow.authorization_url(
         access_type='offline',
         include_granted_scopes='true'
     )
 
     flask.session['state'] = state
+    print ("This is the auth url " + authorization_url)
     return flask.redirect(authorization_url)
 
 #callback for google, this is where the user will be redirected to after they have logged in
 @app.route('/oauth2callback')
 def oauth2callback():
+
     state = flask.session['state']
 
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(CLIENT_SECRETS_FILE, scopes=SCOPES, state=state)
     flow.redirect_uri = flask.url_for('oauth2callback', _external=True)
 
     authorization_response = flask.request.url
-    flow.fetch_token(authorization_response=authorization_response)
+    print ("THIS IS THE REQEST URL: " + authorization_response)
+
+    try:
+        flow.fetch_token(authorization_response=authorization_response)
+    except Exception as e: #for test purposes
+        print(f"Token Fetch Error: {e}")
 
     #the flask.session is a temporary fix for the credentials. We will need to save the credentials in firebase
     #TODO: Later on, we need to save these credentials in firebase once we set up our database
+    print ("REACHED THIS STATEMENT")
     credentials = flow.credentials
     credentials = credentials_to_dict(credentials)
     flask.session['credentials'] = credentials
 
     features = check_granted_scopes(credentials)
     flask.session['features'] = features
+    print ("REACHED BOTOM")
     return flask.redirect('/')
 
 #this is if you aren't added to the oauth consent screen. Every developer should be added, but text the gc if you aren't
