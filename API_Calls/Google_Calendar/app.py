@@ -82,7 +82,7 @@ def oauth2callback():
     try:
         flow.fetch_token(authorization_response=authorization_response)
     except Exception as e: #for test purposes
-        print(f"Token Fetch Error: {e}")
+        print(f"Token Fetch Error: {e}") #if there is a http error thing, write the following terminal command:  export OAUTHLIB_INSECURE_TRANSPORT=1
 
     #the flask.session is a temporary fix for the credentials. We will need to save the credentials in firebase
     #TODO: Later on, we need to save these credentials in firebase once we set up our database
