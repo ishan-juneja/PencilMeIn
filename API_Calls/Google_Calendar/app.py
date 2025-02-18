@@ -2,7 +2,6 @@
 #we will be requesting from the browser: http://localhost:5000 (this is the authorized javascript origin)
 import os
 import flask
-import requests
 from flask import jsonify, render_template
 import google.oauth2.credentials
 from google.oauth2.credentials import Credentials
