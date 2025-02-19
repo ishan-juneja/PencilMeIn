@@ -159,7 +159,57 @@ def api_calendar():
     return jsonify(events)
 
 
+@app.route('/create-event-form')
+def create_event_form():
+    if 'credentials' not in flask.session:
+        return ('You need to <a href="/authorize">authorize</a> before ' +
+                'testing the code to revoke credentials.')    
+    return '''
+        <form method="POST" action="/create-event">
+            Summary: <input type="text" name="summary"><br>
+            Start (YYYY-MM-DD HH:MM): <input type="text" name="start"><br>
+            End (YYYY-MM-DD HH:MM): <input type="text" name="end"><br>
+            Description: <textarea name="description"></textarea><br>
+            <input type="submit" value="Create Event">
+        </form>
+    '''
 
+@app.route('/create-event', methods=['POST'])
+def create_event():
+    if 'credentials' not in flask.session:
+        return ('You need to <a href="/authorize">authorize</a> before ' +
+                'testing the code to revoke credentials.')
+    
+    credentials = google.oauth2.credentials.Credentials(
+        **flask.session['credentials'])
+    
+    service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
+
+    event = {
+        'summary': flask.request.form['summary'],
+        'description': flask.request.form['description'],
+        'start': {
+            'dateTime': datetime.datetime.strptime(
+                flask.request.form['start'],
+                '%Y-%m-%d %H:%M'
+            ).isoformat(),
+            'timeZone': 'PST',
+        },
+        'end': {
+            'dateTime': datetime.datetime.strptime(
+                flask.request.form['end'],
+                '%Y-%m-%d %H:%M'
+            ).isoformat(),
+            'timeZone': 'PST',
+        }
+    }
+
+    created_event = service.events().insert(
+        calendarId='primary',
+        body=event
+    ).execute()
+
+    return f'Event created: {created_event["htmlLink"]}'
 
 
 def get_calendar_events(creds, calendar_id='primary', max_results=50):
