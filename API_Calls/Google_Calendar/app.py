@@ -183,20 +183,20 @@ def create_event():
     credentials = google.oauth2.credentials.Credentials(
         **flask.session['credentials'])
     
-    service = googleapiclient.discovery.build('calendar', 'v3', credentials=credentials)
+    service = build('calendar', 'v3', credentials=credentials)
 
     event = {
         'summary': flask.request.form['summary'],
         'description': flask.request.form['description'],
         'start': {
-            'dateTime': datetime.datetime.strptime(
+            'dateTime': datetime.strptime(
                 flask.request.form['start'],
                 '%Y-%m-%d %H:%M'
             ).isoformat(),
             'timeZone': 'PST',
         },
         'end': {
-            'dateTime': datetime.datetime.strptime(
+            'dateTime': datetime.strptime(
                 flask.request.form['end'],
                 '%Y-%m-%d %H:%M'
             ).isoformat(),
