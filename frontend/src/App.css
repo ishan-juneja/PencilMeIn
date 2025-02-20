@@ -1,29 +1,50 @@
-#root {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #FFFFFF;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.calendar {
   width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid #E5E7EB;
+}
+
+.calendar .calendar-header {
+  background-color: #F9FAFB;
+  padding: 1rem;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.calendar .calendar-grid {
   padding: 1rem;
 }
 
-.logo {
-  position: fixed;
-  top: 2vw;   /* 2% of viewport width from the top */
-  left: 2vw;  /* 2% of viewport width from the left */
-  width: 5vw; /* 5% of the viewport width */
-  height: auto; /* Maintaining aspect ratio */
-}
-
-.form-container {
+.calendar .calendar-day {
+  width: 2.5rem;
+  height: 2.5rem;
   display: flex;
-  flex-direction: column;
-  margin-top: 14vh;
-  margin-left: 4vw;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  cursor: pointer;
 }
 
-.pencil-me-in {
-  font-size: 1.25rem;
-  color: #5973DE;
-} 
+.calendar .calendar-day:hover {
+  background-color: #F3F4F6;
+}
 
-.event-name-input {
-  height: 5vh;
-  width: 90vw;
+.calendar .calendar-day.selected {
+  background-color: #3B82F6;
+  color: white;
 }

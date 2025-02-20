@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   color: rgba(0, 0, 0, 0.8);
@@ -9,6 +13,19 @@ body {
   font-family: inherit;
 }
 
-h1 {
-  font-size: 3.2em;
+.rdp {
+  --rdp-cell-size: 40px;
+  --rdp-accent-color: #3b82f6;
+  --rdp-background-color: #e5e7eb;
+  margin: 0;
+}
+
+.rdp-day_selected:not([disabled]) {
+  background-color: var(--rdp-accent-color);
+  color: white;
+}
+
+.rdp-day_selected:hover:not([disabled]) {
+  background-color: var(--rdp-accent-color);
+  color: white;
 }
