@@ -1,35 +1,48 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import React, { useState } from 'react';
+import './App.css';
+import DatesDropdown from './components/DatesDropdown';
+import TimezoneDropdown from './components/TimezoneDropdown';
+import StartingTimeDropdown from './components/StartingTimeDropdown';
+import EndingTimeDropdown from './components/EndingTimeDropdown';
+import { Link } from 'react-router-dom';
+import logo from '/pencil-me-in-logo.png';
+import CalendarSelection from './components/Calendar.jsx';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [eventName, setEventName] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [timeZone, setTimeZone] = useState('Pacific Time');
+  const [startTime, setStartTime] = useState('9:00AM');
+  const [endTime, setEndTime] = useState('10:00PM');
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <img src={logo} alt="Pencil Me In Logo" className="logo" />
+      <div className="form-container">
+        <h3 className="pencil-me-in">Pencil Me In.</h3>
+        <input
+          type="text"
+          className="event-name-input" 
+          placeholder="Enter Event Name"
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
+      
+      <div className="layout-container">
+        <div className="calendar-side">
+          <CalendarSelection />
+        </div>
+        <div className="dropdowns-side">
+          <DatesDropdown />
+          <br /> <br />
+          <TimezoneDropdown />
+          <br /> <br />
+          <StartingTimeDropdown />
+          <br /> <br />
+          <EndingTimeDropdown />
+        </div>
       </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
