@@ -5,7 +5,7 @@ import TimezoneDropdown from './components/TimezoneDropdown';
 import StartingTimeDropdown from './components/StartingTimeDropdown';
 import EndingTimeDropdown from './components/EndingTimeDropdown';
 import { Link } from 'react-router-dom';
-import logo from '../public/pencil-me-in-logo.png';
+import logo from '/pencil-me-in-logo.png';
 import CalendarSelection from './components/Calendar.jsx';
 
 function App() {
