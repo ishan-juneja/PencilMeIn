@@ -10,10 +10,12 @@ function DatesDropdown() {
     <Select
       options={items}
       values={[]}
-      dropdownHandleRenderer={({ state }) => (
-        <span>{state.dropdown ? '-' : 'v'}</span>
-      )}
       onChange={(value) => console.log(value)}
+      placeholder="Select Date Type"
+      style={{
+        width: '600px',
+        minWidth: '450px'
+      }}
     />
   );
 }

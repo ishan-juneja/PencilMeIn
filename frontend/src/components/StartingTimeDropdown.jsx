@@ -24,10 +24,8 @@ function StartingTimeDropdown() {
     <Select
       options={items}
       values={[]}
-      dropdownHandleRenderer={({ state }) => (
-        <span>{state.dropdown ? '-' : 'v'}</span>
-      )}
       onChange={(value) => console.log(value)}
+      placeholder="Select Starting Time"
     />
   );
 }
