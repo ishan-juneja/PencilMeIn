@@ -6,6 +6,8 @@
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
     "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --primary-color: #5973DE;
+  --hover-color: #4a5eb3;
 }
 
 body {
@@ -102,7 +104,6 @@ body {
   gap: 1.5rem;  
 }
 
-/* PrimeReact calendar styling */
 .large-calendar .p-datepicker {
   padding: 0.5rem;
   border-radius: 8px;
