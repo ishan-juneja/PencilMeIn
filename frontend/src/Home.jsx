@@ -7,6 +7,7 @@ import CalendarSelection from './components/Calendar.jsx'
 import logo from '/pencil-me-in-logo.png'
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Calendar from './Calendar.jsx'
 
 const Home = () => {
     const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Home = () => {
     const [endTime, setEndTime] = useState('10:00PM');
 
     const handleButtonClick = () => {
+        <Calendar event={eventName} setEvent={setEventName}/>
         navigate("/calendar");
     };
 
@@ -24,11 +26,12 @@ const Home = () => {
         <div className="home-container">
             <img src={logo} alt="Pencil Me In Logo" className="logo" />
             <div className="form-container">
-                <h3 className="pencil-me-in">Pencil Me In.</h3>
+                <h3 className="pencil-me-in">Pencil Me In</h3>
+                <p className="description">simplify scheduling, mazimize time</p>
                 <input
                     type="text"
                     className="event-name-input"
-                    placeholder="Enter Event Name"
+                    placeholder="Pencil in an event name..."
                     value={eventName}
                     onChange={(e) => setEventName(e.target.value)}
                 />
