@@ -1,0 +1,39 @@
+/* Popup container */
+.dates-dropdown {
+    display: inline-block;
+    position: relative;
+}
+
+.dates-dropdown-popup {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    width: 12rem;
+    top: 1.5rem;
+    right: 0;
+    z-index: 1000;
+}
+
+.dates-dropdown-text {
+    font-weight: 600;
+    text-decoration: underline;
+    margin:0;
+}
+
+.dates-dropdown-text:hover {
+    cursor: pointer;
+}
+
+/* Each dropdown option */
+.dates-dropdown-option {
+    padding: 10px;
+    cursor: pointer;
+    transition: background 0.2s ease-in-out;
+}
+
+/* Hover effect */
+.dates-dropdown-option:hover {
+    background-color: #f0f0f0;
+}

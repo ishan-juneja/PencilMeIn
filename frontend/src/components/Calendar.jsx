@@ -15,7 +15,7 @@ function CalendarSelection() {
     const currentMonth = new Date(year, month, 1);
     
     // Initialize with null instead of today's date
-    const [date, setDate] = useState(null);
+    const [dates, setDates] = useState([]);
     const [visibleMonth, setVisibleMonth] = useState(currentMonth);
 
     // Set minDate to today to prevent selecting past dates
@@ -37,13 +37,13 @@ function CalendarSelection() {
     // Handle date selection
     const handleDateChange = (e) => {
         console.log("Date selected:", e.value);
-        setDate(e.value);
+        setDates(e.value);
     };
 
     return (
         <div className="card flex justify-content-center">
             <PrimeCalendar 
-                value={date} 
+                value={dates} 
                 onChange={handleDateChange}
                 minDate={minDate}
                 maxDate={maxDate} 
@@ -53,7 +53,8 @@ function CalendarSelection() {
                 dateFormat="mm/dd/yy"
                 viewDate={visibleMonth}
                 onViewDateChange={onViewDateChange}
-                selectionMode="single"
+                selectionMode="multiple"
+                readOnlyInput
                 disabledDates={[]}
             />
         </div>

@@ -57,15 +57,38 @@
   display: flex;
   justify-content: center;
   gap: 4rem;
-  margin-top: 0rem;
+  margin-top: 1rem;
   margin-left: 0rem;
   width: 100%;
 }
 
 .calendar-side {
   flex: 0 0 auto;
-  margin-top: 2rem;
+  margin-top: 0rem;
 }
+
+.calendar-text {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.calendar-description {
+  position: absolute;
+  left: 0;
+  margin: 0;
+}
+
+.dates-dropdown {
+  margin: 0;
+}
+
+.calendar-link:hover {
+  cursor: pointer;
+}
+
 
 .dropdowns-side {
   flex: 0 0 auto;
