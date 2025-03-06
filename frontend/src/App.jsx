@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import './App.css';
-import Home from './Home.jsx';
-import Calendar from './Calendar.jsx';
+import Home from './HomePage.jsx';
+import Calendar from './CalendarPage.jsx';
 
 function App() {
   return (

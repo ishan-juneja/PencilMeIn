@@ -1,13 +1,13 @@
-import './Home.css'
-import DatesDropdown from './components/DatesDropdown'
-import TimezoneDropdown from './components/TimezoneDropdown'
-import StartingTimeDropdown from './components/StartingTimeDropdown'
-import EndingTimeDropdown from './components/EndingTimeDropdown'
+import './HomePage.css'
+import DatesDropdown from './components/DatesDropdown.jsx'
+import TimezoneDropdown from './components/TimezoneDropdown.jsx'
+import StartingTimeDropdown from './components/StartingTimeDropdown.jsx'
+import EndingTimeDropdown from './components/EndingTimeDropdown.jsx'
 import CalendarSelection from './components/Calendar.jsx'
 import logo from '/pencil-me-in-logo.png'
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import Calendar from './Calendar.jsx'
+import Calendar from './CalendarPage.jsx'
 
 const Home = () => {
     const navigate = useNavigate();
