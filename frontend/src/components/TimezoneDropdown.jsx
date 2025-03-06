@@ -1,9 +1,11 @@
 import Select from 'react-dropdown-select';
+import { useState } from 'react'
+import './TimezoneDropdown.css'
 import './ui/Dropdown.css'
 
 const items = [
-  { label: 'PT', value: 'pt' },
-  { label: 'EST', value: 'est' },
+  { label: 'Pacific Time', value: 'pt' },
+  { label: 'Eastern Standard Time', value: 'est' },
   { label: 'UTC', value: 'utc' },
   { label: 'IST', value: 'ist' },
   { label: 'CST', value: 'cst' },
@@ -12,19 +14,31 @@ const items = [
   { label: 'GMT', value: 'gmt' },
 ];
 
-function TimezoneDropdown() {
+function TimezoneDropdown(props) {
+
+  const [open, setOpen] = useState(false);
+
   return (
-    <Select
-      className='dropdown'
-      options={items}
-      values={[]}
-      onChange={(value) => console.log(value)}
-      placeholder="Select Time Zone"
-      style={{
-        width: '600px',
-        minWidth: '450px'
-      }}
-    />
+    <div className="timezone-dropdown">
+    <p className='timezone-dropdown-text' onClick={() => setOpen(!open)}>{props.timeZone}</p>
+
+    {open && (
+      <div className='timezone-dropdown-popup'> 
+        {items.map((item) => (
+          <div 
+              key={item.value} 
+              className="timezone-dropdown-option"
+              onClick={() => {
+                  props.setTimeZone(item.label);
+                  setOpen(false);
+              }}
+          >
+              {item.label}
+          </div>
+        ))}
+      </div>
+    )}
+  </div>
   );
 }
 

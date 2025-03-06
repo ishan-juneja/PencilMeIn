@@ -20,9 +20,9 @@ function CalendarSelection() {
 
     // Set minDate to today to prevent selecting past dates
     let minDate = today;
-    let maxDate = new Date();
-    maxDate.setMonth(nextMonth);
-    maxDate.setFullYear(nextYear);
+    // let maxDate = new Date();
+    // maxDate.setMonth(nextMonth);
+    // maxDate.setFullYear(nextYear);
 
     // Handle month navigation
     const onViewDateChange = (e) => {
@@ -46,7 +46,7 @@ function CalendarSelection() {
                 value={dates} 
                 onChange={handleDateChange}
                 minDate={minDate}
-                maxDate={maxDate} 
+                // maxDate={maxDate} 
                 inline 
                 className="large-calendar"
                 showOtherMonths={false}

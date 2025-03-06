@@ -29,8 +29,8 @@
   align-items: center;
   margin: 0rem;
   width: 100%;
-  padding-left: 5rem;
-  padding-right: 5rem;
+  padding-left: 10rem;
+  padding-right: 10rem;
 }
 
 .pencil-me-in {
@@ -89,13 +89,31 @@
   cursor: pointer;
 }
 
-
 .dropdowns-side {
   flex: 0 0 auto;
-  margin-top: 2rem;
+  margin-top: 0;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  position: relative;
+}
+
+.dropdowns-text {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.dropdowns-description {
+  position: absolute;
+  left: 0;
+  margin: 0;
+}
+
+.timezone-dropdown {
+  margin: 0;
 }
 
 .create-event-button {

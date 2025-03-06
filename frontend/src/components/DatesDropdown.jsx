@@ -4,8 +4,8 @@ import './DatesDropdown.css'
 import { useState } from 'react'
 
 const items = [
-  { label: 'Specific Dates', value: 'dates' },
-  { label: 'Days of the Week', value: 'days' }
+  { label: 'Specific Dates', value: 'Specific Dates' },
+  { label: 'Days of the Week', value: 'Days of the Week' }
 ];
 
 function DatesDropdown(props) {
@@ -14,7 +14,7 @@ function DatesDropdown(props) {
 
   return (
     <div className="dates-dropdown">
-      <p className='dates-dropdown-text' onClick={() => setOpen(!open)}>Specific Dates</p>
+      <p className='dates-dropdown-text' onClick={() => setOpen(!open)}>{props.dateOption}</p>
 
       {open && (
         <div className='dates-dropdown-popup'> 
@@ -23,7 +23,7 @@ function DatesDropdown(props) {
                 key={item.value} 
                 className="dates-dropdown-option"
                 onClick={() => {
-                    props.setDateOption(item.value);
+                    props.setDateOption(item.label);
                     setOpen(false);
                 }}
             >
