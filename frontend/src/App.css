@@ -1,6 +1,6 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities;  */
 
 :root {
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -137,8 +137,9 @@ body {
 }
 
 .large-calendar .p-datepicker table td.p-datepicker-today > span {
-  border: 1px solid #5973DE;
+  /* border: 1px solid #5973DE; */
   font-weight: bold;
+  color: #5973DE;
 }
 
 .large-calendar .p-datepicker .p-datepicker-header {

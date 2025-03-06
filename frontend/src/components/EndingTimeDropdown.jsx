@@ -1,4 +1,5 @@
 import Select from 'react-dropdown-select';
+import './ui/Dropdown.css'
 
 const items = [
   { label: '6:00 AM', value: '06:00' },
@@ -22,6 +23,7 @@ const items = [
 function EndingTimeDropdown() {
   return (
     <Select
+      className='dropdown'
       options={items}
       values={[]}
       onChange={(value) => {

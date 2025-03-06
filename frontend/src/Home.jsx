@@ -7,6 +7,7 @@ import CalendarSelection from './components/Calendar.jsx'
 import logo from '/pencil-me-in-logo.png'
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import Calendar from './Calendar.jsx'
 
 const Home = () => {
     const navigate = useNavigate();
@@ -16,30 +17,37 @@ const Home = () => {
     const [startTime, setStartTime] = useState('9:00AM');
     const [endTime, setEndTime] = useState('10:00PM');
 
+    const [dateOption, setDateOption] = useState('dates');
+
     const handleButtonClick = () => {
+        <Calendar event={eventName} setEvent={setEventName}/>
         navigate("/calendar");
     };
 
     return(
         <div className="home-container">
             <img src={logo} alt="Pencil Me In Logo" className="logo" />
+            <h3 className="pencil-me-in">Pencil Me In</h3>
+                <p className="description">simplify scheduling, mazimize time</p>
             <div className="form-container">
-                <h3 className="pencil-me-in">Pencil Me In.</h3>
                 <input
                     type="text"
                     className="event-name-input"
-                    placeholder="Enter Event Name"
+                    placeholder="Pencil in an event name..."
                     value={eventName}
                     onChange={(e) => setEventName(e.target.value)}
                 />
             </div>
             <div className="layout-container">
                 <div className="calendar-side">
+                    <div className="calendar-text">
+                        <p className='calendar-description'>Pencil In Dates...</p>
+                        <DatesDropdown className='dates-dropdown' setDateOption={setDateOption}/>
+                    </div>
                     <CalendarSelection />
+
                 </div>
                 <div className="dropdowns-side">
-                    <DatesDropdown />
-                    <br /> <br />
                     <TimezoneDropdown />
                     <br /> <br />
                     <StartingTimeDropdown />
@@ -48,6 +56,8 @@ const Home = () => {
                 </div>
             </div>
             <button className="create-event-button" onClick={handleButtonClick}>Create Event</button>
+
+
         </div>
     )
 };

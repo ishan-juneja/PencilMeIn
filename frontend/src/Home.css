@@ -5,13 +5,14 @@
 
 .home-container {
   width: 100%;
-  max-width: 1280px;
+  /* max-width: 1280px; */
   margin: 0 auto;
-  padding: 2rem;
+  padding: 0rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 }
 
 .logo {
@@ -26,21 +27,26 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 6rem;
+  margin: 0rem;
   width: 100%;
-  max-width: 600px;
+  padding-left: 5rem;
+  padding-right: 5rem;
 }
 
 .pencil-me-in {
-  font-size: 1.5rem;
+  font-size: 3.5rem;
   color: #5973DE;
-  margin-bottom: 1rem;
+  margin-bottom: 0rem;
+  margin-top: 1rem;
   text-align: left;
 } 
 
+.description {
+  margin-top: 1rem;
+}
+
 .event-name-input {
   width: 100%;
-  max-width: 500px;
   padding: 0.5rem;
   margin-top: 1rem;
   border: 1px solid #ccc;
@@ -50,15 +56,39 @@
 .layout-container {
   display: flex;
   justify-content: center;
-  gap: 2rem;
-  margin-top: 2rem;
+  gap: 4rem;
+  margin-top: 1rem;
+  margin-left: 0rem;
   width: 100%;
 }
 
 .calendar-side {
   flex: 0 0 auto;
-  margin-top: 2rem;
+  margin-top: 0rem;
 }
+
+.calendar-text {
+  display: flex;
+  justify-content: flex-end;
+  position: relative;
+  margin-bottom: 1rem;
+  margin-top: 0.5rem;
+}
+
+.calendar-description {
+  position: absolute;
+  left: 0;
+  margin: 0;
+}
+
+.dates-dropdown {
+  margin: 0;
+}
+
+.calendar-link:hover {
+  cursor: pointer;
+}
+
 
 .dropdowns-side {
   flex: 0 0 auto;

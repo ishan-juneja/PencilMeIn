@@ -1,4 +1,5 @@
 import Select from 'react-dropdown-select';
+import './ui/Dropdown.css'
 
 const items = [
   { label: 'PT', value: 'pt' },
@@ -14,10 +15,15 @@ const items = [
 function TimezoneDropdown() {
   return (
     <Select
+      className='dropdown'
       options={items}
       values={[]}
       onChange={(value) => console.log(value)}
       placeholder="Select Time Zone"
+      style={{
+        width: '600px',
+        minWidth: '450px'
+      }}
     />
   );
 }

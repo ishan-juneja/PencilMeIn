@@ -12,20 +12,12 @@ body {
 h1 {
   font-size: 3.2em;
 }
+
+/*
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  color: rgba(0, 0, 0, 0.8);
-  background-color: #FFFFFF;
-}
-
-body {
-  margin: 0;
-  font-family: inherit;
-}
+*/
 
 .rdp {
   --rdp-cell-size: 40px;
