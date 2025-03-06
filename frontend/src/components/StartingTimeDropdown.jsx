@@ -30,7 +30,8 @@ function StartingTimeDropdown() {
       placeholder="Select Starting Time"
       style={{
         width: '600px',
-        minWidth: '450px'
+        minWidth: '450px',
+        textAlign: 'center'
       }}
     />
   );

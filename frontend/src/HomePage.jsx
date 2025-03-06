@@ -13,11 +13,12 @@ const Home = () => {
     const navigate = useNavigate();
     const [eventName, setEventName] = useState('');
     const [selectedDate, setSelectedDate] = useState(new Date());
-    const [timeZone, setTimeZone] = useState('Pacific Time');
+    // const [timeZone, setTimeZone] = useState('Pacific Time');
     const [startTime, setStartTime] = useState('9:00AM');
     const [endTime, setEndTime] = useState('10:00PM');
 
-    const [dateOption, setDateOption] = useState('dates');
+    const [dateOption, setDateOption] = useState('Specific Dates');
+    const [timeZone, setTimeZone] = useState('Pacific Time');
 
     const handleButtonClick = () => {
         <Calendar event={eventName} setEvent={setEventName}/>
@@ -42,22 +43,21 @@ const Home = () => {
                 <div className="calendar-side">
                     <div className="calendar-text">
                         <p className='calendar-description'>Pencil In Dates...</p>
-                        <DatesDropdown className='dates-dropdown' setDateOption={setDateOption}/>
+                        <DatesDropdown className='dates-dropdown' setDateOption={setDateOption} dateOption={dateOption}/>
                     </div>
                     <CalendarSelection />
 
                 </div>
                 <div className="dropdowns-side">
-                    <TimezoneDropdown />
-                    <br /> <br />
+                    <div className='dropdowns-text'>
+                        <p className='dropdowns-description'>Pencil In a Time Frame...</p>
+                        <TimezoneDropdown className='timezone-dropdown' setTimeZone={setTimeZone} timeZone={timeZone}/>
+                    </div>
                     <StartingTimeDropdown />
-                    <br /> <br />
                     <EndingTimeDropdown />
+                    <button className="create-event-button" onClick={handleButtonClick}>Create Event</button>
                 </div>
             </div>
-            <button className="create-event-button" onClick={handleButtonClick}>Create Event</button>
-
-
         </div>
     )
 };
