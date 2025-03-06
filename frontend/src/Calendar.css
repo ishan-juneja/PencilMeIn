@@ -1,0 +1,251 @@
+/* Calendar styles with "my-" prefix to avoid conflicts */
+
+.my-calendar-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  color: #333;
+}
+
+.my-calendar-logo {
+  width: 60px;
+  height: 60px;
+  margin: 0 auto;
+  display: block;
+}
+
+.my-calendar-title {
+  text-align: center;
+  color: #5973DE;
+  font-size: 1.5rem;
+  margin: 0.5rem 0 1.5rem;
+}
+
+.my-calendar-inputs {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.my-calendar-event-input {
+  padding: 0.5rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  width: 200px;
+  outline: none;
+}
+
+.my-calendar-timezone {
+  display: flex;
+  align-items: center;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  padding: 0.5rem 1rem;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.my-layout-container {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.my-calendar-side {
+  flex: 1;
+  max-width: 600px;
+}
+
+.my-calendar-side h2 {
+  font-size: 1.1rem;
+  font-weight: normal;
+  margin-bottom: 0.5rem;
+  text-align: left;
+}
+
+/* Calendar grid */
+.my-availability-grid {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  user-select: none; /* Prevent text selection during drag */
+  background: white;
+}
+
+.my-availability-header {
+  display: grid;
+  grid-template-columns: 60px repeat(7, 1fr);
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #ddd;
+}
+
+.my-day-header {
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.my-time-column {
+  border-right: 1px solid #ddd;
+}
+
+.my-availability-body {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Hour container includes label and 4 15-minute rows */
+.my-hour-container {
+  display: flex;
+  border-bottom: 1px solid #eee;
+  height: 40px; /* Each hour has 40px height total */
+}
+
+.my-hour-container:last-child {
+  border-bottom: none;
+}
+
+.my-hour-label {
+  width: 60px;
+  padding: 0 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 0.8rem;
+  color: #666;
+  border-right: 1px solid #ddd;
+}
+
+.my-minute-blocks {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  height: 100%;
+}
+
+.my-minute-row {
+  display: flex;
+  height: 10px; /* Each 15-min segment is 10px (40px total per hour) */
+  width: 100%;
+}
+
+.my-minute-cell {
+  flex: 1;
+  position: relative;
+  border-right: 1px solid #eee;
+  cursor: pointer;
+  height: 100%;
+  transition: background-color 0.1s;
+}
+
+.my-minute-cell:hover {
+  background-color: rgba(89, 115, 222, 0.1);
+}
+
+.my-minute-cell.selected {
+  background-color: #5973DE;
+}
+
+.my-minute-cell:last-child {
+  border-right: none;
+}
+
+/* Controls at the bottom */
+.my-controls-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+}
+
+.my-calendar-submit-button {
+  background-color: #5973DE;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0.6rem 1.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.my-calendar-submit-button:hover {
+  background-color: #4560C8;
+}
+
+.my-toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Toggle switch styling */
+.my-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.my-toggle input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.my-toggle-slider {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+  background-color: #ccc;
+  border-radius: 20px;
+  margin-right: 8px;
+  transition: 0.4s;
+}
+
+.my-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 2px;
+  bottom: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.4s;
+}
+
+.my-toggle input:checked + .my-toggle-slider {
+  background-color: #5973DE;
+}
+
+.my-toggle input:checked + .my-toggle-slider:before {
+  transform: translateX(16px);
+}
+
+.my-toggle-label {
+  font-size: 0.9rem;
+}
+
+.my-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.my-legend-color {
+  width: 16px;
+  height: 16px;
+  background-color: #FFC107;
+  border-radius: 2px;
+}
+
+.my-legend-label {
+  font-size: 0.9rem;
+}

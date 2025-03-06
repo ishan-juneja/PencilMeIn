@@ -50,7 +50,7 @@
 .layout-container {
   display: flex;
   justify-content: center;
-  gap: 4rem;
+  gap: 2rem;
   margin-top: 2rem;
   width: 100%;
 }
@@ -81,4 +81,140 @@
 
 .create-event-button:hover {
   background-color: #4a5eb3;
+}
+
+.calendar-grid {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+  background: white;
+  margin-top: 1rem;
+  width: 500px;
+}
+
+.calendar-header {
+  display: grid;
+  grid-template-columns: 50px repeat(7, 1fr);
+  background: #f8f9fa;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.day-header {
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  color: #333;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.calendar-body {
+  position: relative;
+  overflow: visible;
+}
+
+.time-row {
+  display: grid;
+  grid-template-columns: 50px repeat(7, 1fr);
+  border-bottom: 1px solid #e0e0e0;
+  height: 40px;
+}
+
+.time-label {
+  padding: 0.25rem;
+  text-align: right;
+  color: #666;
+  font-size: 0.75rem;
+  border-right: 1px solid #e0e0e0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.time-cell {
+  border-right: 1px solid #e0e0e0;
+  position: relative;
+  height: 40px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  overflow: visible;
+}
+
+.time-cell:hover {
+  background-color: rgba(89, 115, 222, 0.1);
+}
+
+.time-cell.selected {
+  background-color: rgba(89, 115, 222, 0.05);
+}
+
+.draggable-slot {
+  width: calc(100% - 4px);
+  height: calc(100% - 4px);
+  margin: 2px;
+  background-color: rgba(89, 115, 222, 0.2);
+  border: 1px solid #5973DE;
+  border-radius: 4px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  touch-action: none;
+}
+
+.drag-handle {
+  width: 30px;
+  height: 4px;
+  background-color: #5973DE;
+  border-radius: 2px;
+  opacity: 0.5;
+  cursor: ns-resize;
+}
+
+.draggable-slot:hover .drag-handle {
+  opacity: 0.8;
+}
+
+.box {
+  touch-action: none;
+  user-select: none;
+}
+
+.cursor-y {
+  cursor: ns-resize;
+}
+
+.event-name-container {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+}
+
+.timezone-selector {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  color: #333;
+  font-size: 0.9rem;
+}
+
+.timezone-selector span {
+  margin-right: 0.5rem;
+}
+
+h2 {
+  color: #333;
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  text-align: left;
 }
