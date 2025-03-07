@@ -3,7 +3,7 @@ import DatesDropdown from './components/DatesDropdown.jsx'
 import TimezoneDropdown from './components/TimezoneDropdown.jsx'
 import StartingTimeDropdown from './components/StartingTimeDropdown.jsx'
 import EndingTimeDropdown from './components/EndingTimeDropdown.jsx'
-import CalendarSelection from './components/Calendar.jsx'
+import CalendarSelection from './components/HomePageCalendar.jsx'
 import logo from '/pencil-me-in-logo.png'
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -29,7 +29,7 @@ const Home = () => {
         <div className="home-container">
             <img src={logo} alt="Pencil Me In Logo" className="logo" />
             <h3 className="pencil-me-in">Pencil Me In</h3>
-                <p className="description">simplify scheduling, mazimize time</p>
+                <p className="description">simplify scheduling, maximize time</p>
             <div className="form-container">
                 <input
                     type="text"

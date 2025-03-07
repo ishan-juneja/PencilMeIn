@@ -1,0 +1,29 @@
+/* Calendar page styles */
+
+.calendar-page {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    color: #333;
+    background-color: #f9f9f9;
+  }
+  
+  .calendar-page-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  
+  .calendar-logo {
+    width: 60px;
+    height: 60px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .calendar-title {
+    color: #5973DE;
+    font-size: 1.5rem;
+    margin: 0;
+  }
