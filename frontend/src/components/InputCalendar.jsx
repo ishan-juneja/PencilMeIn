@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-const InputCalendarPage = ({ selectedSlots, setSelectedSlots }) => {
+const InputCalendarPage = ({ selectedSlots, setSelectedSlots, startTime, endTime }) => {
   const [isDragging, setIsDragging] = useState(false);
   const [isDeselecting, setIsDeselecting] = useState(false);
   
@@ -17,8 +17,11 @@ const InputCalendarPage = ({ selectedSlots, setSelectedSlots }) => {
   // Days of the week
   const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
+  const startHour = parseInt(startTime.split(":")[0]);
+  const endHour = parseInt(endTime.split(":")[0]);
+
   // Time slots from 9am to 9pm (13 hours)
-  const hours = Array.from({ length: 13 }, (_, i) => i + 9);
+  const hours = Array.from({ length: endHour-startHour }, (_, i) => i + startHour);
   
   // Format hour to am/pm
   const formatHour = (hour) => {
