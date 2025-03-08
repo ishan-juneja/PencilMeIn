@@ -6,11 +6,11 @@ import Calendar from './CalendarPage.jsx';
 
 function App() {
   return (
-    <div id='app'>
+    <div id="app">
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/calendar' element={<Calendar />} />
+          <Route path="/" element={<Home />} />
+          <Route path="/calendar" element={<Calendar />} />
         </Routes>
       </BrowserRouter>
     </div>
