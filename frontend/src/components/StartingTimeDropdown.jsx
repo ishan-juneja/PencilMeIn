@@ -23,7 +23,7 @@ const items = [
 function StartingTimeDropdown() {
   return (
     <Select
-      className='dropdown'
+      className='dropdown starting-dropdown' //changes class name so that it's easier to identify which is ending_time and starting_time
       options={items}
       values={[]}
       onChange={(value) => console.log(value)}

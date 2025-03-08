@@ -23,12 +23,13 @@ const items = [
 function EndingTimeDropdown() {
   return (
     <Select
-      className='dropdown'
+      className='dropdown ending-dropdown' //changes class name so that it's easier to identify which is ending_time and starting_time
       options={items}
       values={[]}
       onChange={(value) => {
         const selectedTime = value[0]?.value;
         console.log('Selected time:', selectedTime);
+        console.log(value);
       }}
       placeholder="Select End Time"
     />
