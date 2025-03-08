@@ -201,7 +201,7 @@
   display: inline-block;
   width: 36px;
   height: 20px;
-  background-color: #ccc;
+  background-color: #637EE8;
   border-radius: 20px;
   margin-right: 8px;
   transition: 0.4s;
@@ -220,7 +220,7 @@
 }
 
 .my-toggle input:checked + .my-toggle-slider {
-  background-color: #5973DE;
+  background-color: #FFEA9D;
 }
 
 .my-toggle input:checked + .my-toggle-slider:before {
