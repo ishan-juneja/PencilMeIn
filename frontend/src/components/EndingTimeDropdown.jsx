@@ -20,18 +20,33 @@ const items = [
   { label: '9:00 PM', value: '21:00' }
 ];
 
-function EndingTimeDropdown() {
+function EndingTimeDropdown(props) {
   return (
-    <Select
-      className='dropdown'
-      options={items}
-      values={[]}
-      onChange={(value) => {
-        const selectedTime = value[0]?.value;
-        console.log('Selected time:', selectedTime);
-      }}
-      placeholder="Select End Time"
-    />
+    <div>
+      <Select
+        className='dropdown'
+        options={items}
+        values={[items.find(item => item.label === "5:00 PM")]}
+        onChange={(value) => props.setEndTime(value.length > 0 ? value[0].value : "")}
+        style={{
+          width: '600px',
+          minWidth: '450px',
+          textAlign: "center"
+        }}
+
+        contentRenderer={({ state }) => (
+          <div
+            style={{
+              width: "100%",
+              textAlign: "center",
+              fontSize: "16px",
+            }}
+          >
+            {state.values.length ? state.values.map((v) => v.label).join(", ") : "Select Ending Time"}
+          </div>
+        )}
+      />
+    </div>
   );
 }
 

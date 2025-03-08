@@ -2,7 +2,7 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './InputCalendar.css';
 
-function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded }) {
+function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTime, endTime }) {
   const [isDragging, setIsDragging] = useState(false);
   const [isDeselecting, setIsDeselecting] = useState(false);
 
@@ -26,9 +26,14 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded }) {
 
   // Days / Hours
   const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-  const hours = Array.from({ length: 13 }, (_, i) => i + 9); // 9 AM..9 PM
 
-  // Convert 24h -> "9am", "12pm", etc.
+  const startHour = parseInt(startTime.split(":")[0]);
+  const endHour = parseInt(endTime.split(":")[0]);
+
+  // Time slots from 9am to 9pm (13 hours)
+  const hours = Array.from({ length: endHour-startHour }, (_, i) => i + startHour);
+  
+  // Format hour to am/pm
   const formatHour = (hour) => {
     if (hour === 12) return "12pm";
     return hour < 12 ? `${hour}am` : `${hour - 12}pm`;

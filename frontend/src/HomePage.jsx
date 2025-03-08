@@ -13,16 +13,21 @@ const Home = () => {
     const navigate = useNavigate();
     const [eventName, setEventName] = useState('');
     const [selectedDate, setSelectedDate] = useState(new Date());
-    // const [timeZone, setTimeZone] = useState('Pacific Time');
-    const [startTime, setStartTime] = useState('9:00AM');
-    const [endTime, setEndTime] = useState('10:00PM');
+    const [startTime, setStartTime] = useState('9:00');
+    const [endTime, setEndTime] = useState('17:00');
 
     const [dateOption, setDateOption] = useState('Specific Dates');
     const [timeZone, setTimeZone] = useState('Pacific Time');
 
+    const [datesSelected, setDatesSelected] = useState([]);
+
     const handleButtonClick = () => {
-        <Calendar event={eventName} setEvent={setEventName}/>
-        navigate("/calendar");
+        console.log(endTime)
+        navigate("/calendar", { state: { 
+            event: eventName,
+            startTime: startTime,
+            endTime: endTime
+        } });
     };
 
     return(
@@ -45,7 +50,8 @@ const Home = () => {
                         <p className='calendar-description'>Pencil In Dates...</p>
                         <DatesDropdown className='dates-dropdown' setDateOption={setDateOption} dateOption={dateOption}/>
                     </div>
-                    <CalendarSelection />
+                    <CalendarSelection setDatesSelected = {setDatesSelected}/>
+                    
 
                 </div>
                 <div className="dropdowns-side">
@@ -53,8 +59,9 @@ const Home = () => {
                         <p className='dropdowns-description'>Pencil In a Time Frame...</p>
                         <TimezoneDropdown className='timezone-dropdown' setTimeZone={setTimeZone} timeZone={timeZone}/>
                     </div>
-                    <StartingTimeDropdown />
-                    <EndingTimeDropdown />
+                    <StartingTimeDropdown className='starting-time-dropdown' setStartTime={setStartTime} startTime={startTime}/>
+                    <EndingTimeDropdown className='ending-time-dropdown' setEndTime={setEndTime} endTime={endTime}/>
+                    
                     <button className="create-event-button" onClick={handleButtonClick}>Create Event</button>
                 </div>
             </div>

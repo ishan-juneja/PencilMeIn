@@ -4,7 +4,7 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css";
 import "primeicons/primeicons.css";
 
-function CalendarSelection() {
+function CalendarSelection(props) {
     let today = new Date();
     let month = today.getMonth();
     let year = today.getFullYear();
@@ -20,9 +20,6 @@ function CalendarSelection() {
 
     // Set minDate to today to prevent selecting past dates
     let minDate = today;
-    // let maxDate = new Date();
-    // maxDate.setMonth(nextMonth);
-    // maxDate.setFullYear(nextYear);
 
     // Handle month navigation
     const onViewDateChange = (e) => {
@@ -36,8 +33,8 @@ function CalendarSelection() {
 
     // Handle date selection
     const handleDateChange = (e) => {
-        console.log("Date selected:", e.value);
         setDates(e.value);
+        props.setDatesSelected(e.value);
     };
 
     return (
@@ -46,7 +43,6 @@ function CalendarSelection() {
                 value={dates} 
                 onChange={handleDateChange}
                 minDate={minDate}
-                // maxDate={maxDate} 
                 inline 
                 className="large-calendar"
                 showOtherMonths={false}

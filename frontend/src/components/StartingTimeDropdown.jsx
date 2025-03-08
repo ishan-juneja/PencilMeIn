@@ -20,19 +20,30 @@ const items = [
   { label: '9:00 PM', value: '21:00' }
 ];
 
-function StartingTimeDropdown() {
+function StartingTimeDropdown(props) {
   return (
     <Select
       className='dropdown'
       options={items}
-      values={[]}
-      onChange={(value) => console.log(value)}
-      placeholder="Select Starting Time"
+      values={[items.find(item => item.label === "9:00 AM")]}
+      onChange={(value) => props.setStartTime(value.length > 0 ? value[0].value : "")}
       style={{
         width: '600px',
         minWidth: '450px',
-        textAlign: 'center'
+        textAlign: "center"
       }}
+
+      contentRenderer={({ state }) => (
+        <div
+          style={{
+            width: "100%",
+            textAlign: "center",
+            fontSize: "16px",
+          }}
+        >
+          {state.values.length ? state.values.map((v) => v.label).join(", ") : "Select Starting Time"}
+        </div>
+      )}
     />
   );
 }

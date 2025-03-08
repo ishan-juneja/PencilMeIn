@@ -1,10 +1,16 @@
 import { useState } from 'react';
+import { useLocation } from "react-router-dom";
 import './CalendarPage.css';
 import logo from '/pencil-me-in-logo.png';
 import Popup from './components/Popup.jsx';
 import InputCalendarPage from './components/InputCalendar.jsx';
 
 export default function CalendarPage() {
+  const location = useLocation();
+  const event = location.state?.event;
+  const startTime = location.state?.startTime;
+  const endTime = location.state?.endTime;
+
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [timeZone, setTimeZone] = useState('Pacific Time');
   const [eventName, setEventName] = useState('');
@@ -27,16 +33,11 @@ export default function CalendarPage() {
       <Popup trigger={popup} setTrigger={setPopup}/>
       <div className="my-calendar-container">
         <img src={logo} alt="pmi logo" className="my-calendar-logo" />
-        <h3 className="my-calendar-title">Pencil Me In.</h3>
         
-        <div className="my-calendar-inputs">
-          <input 
-            type="text" 
-            placeholder="Event name" 
-            className="my-calendar-event-input"
-            value={eventName}
-            onChange={(e) => setEventName(e.target.value)}
-          />
+        
+        <div className="my-calendar-title-container">
+          <h3 className="my-calendar-text">Pencil Me In.</h3>
+          <h1 className="my-calendar-title">{event}</h1>
           <div className="my-calendar-timezone">
             <span>{timeZone}</span>
             <svg 
@@ -62,6 +63,8 @@ export default function CalendarPage() {
           selectedSlots={selectedSlots}
           setSelectedSlots={setSelectedSlots}
           ifNeeded={ifNeeded}
+          endTime = {endTime}
+          startTime = {startTime}
         />
 
         <div className="my-controls-container">
