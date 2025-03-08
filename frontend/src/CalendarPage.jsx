@@ -10,10 +10,11 @@ export default function CalendarPage() {
   const event = location.state?.event;
   const startTime = location.state?.startTime;
   const endTime = location.state?.endTime;
+  const datesSelected = location.state?.datesSelected;
+  
 
   const [selectedSlots, setSelectedSlots] = useState([]);
   const [timeZone, setTimeZone] = useState('Pacific Time');
-  const [eventName, setEventName] = useState('');
   const [popup, setPopup] = useState(true);
 
   // Single toggle: ifNeeded = false => "Available" (purple), ifNeeded = true => "If needed" (yellow)
@@ -21,9 +22,10 @@ export default function CalendarPage() {
 
   const handleSubmit = () => {
     console.log('Submitting event:', {
-      eventName,
+      event,
       timeZone,
-      selectedSlots
+      selectedSlots,
+      datesSelected
     });
     // TODO: API or Firebase calls
   };

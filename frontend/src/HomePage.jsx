@@ -22,11 +22,12 @@ const Home = () => {
     const [datesSelected, setDatesSelected] = useState([]);
 
     const handleButtonClick = () => {
-        console.log(endTime)
+        datesSelected.sort((a, b) => new Date(a) - new Date(b));
         navigate("/calendar", { state: { 
             event: eventName,
             startTime: startTime,
-            endTime: endTime
+            endTime: endTime,
+            datesSelected: datesSelected
         } });
     };
 
