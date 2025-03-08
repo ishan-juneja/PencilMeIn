@@ -270,14 +270,20 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded }) {
               </div>
               <div className="status-row">
                 <span className="status-circle available"></span>
-                <span>Phileena Nguyen - Available</span>
+                <span>Philena Nguyen - Available</span>
               </div>
             </div>
 
             <div className="action-buttons">
-              <button className="action-btn">Schedule</button>
-              <button className="action-btn">Add to Google Calendar</button>
-              <button className="action-btn">Create Zoom Meeting</button>
+              <button className="action-btn schedule-link">Schedule</button>
+              <button className="action-btn">
+                <img src="google-logo.png" alt="" className="btn-icon" />
+                Add to Google Calendar
+              </button>
+              <button className="action-btn">
+                <img src="zoom-logo.png" alt="" className="btn-icon" />
+                Create Zoom Meeting
+              </button>
             </div>
 
             <div className="legend">
