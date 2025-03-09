@@ -2,20 +2,26 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './InputCalendar.css';
 
-function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTime, endTime }) {
+/**
+ *  selectedSlots: Array of { slotKey, color } that the user has manually selected
+ *  setSelectedSlots: function to update selectedSlots
+ *  ifNeeded: boolean => false => purple (#637EE8), true => yellow (#FFEA9D)
+ *  startTime, endTime: e.g. "09:00", "17:00" for building the hours array
+ *  busySlots: (optional) Array of slotKey strings that come from Google Calendar => shown in gray (#cfcfcf)
+ */
+function InputCalendarPage({
+  selectedSlots,
+  setSelectedSlots,
+  ifNeeded,
+  startTime,
+  endTime,
+  busySlots = []
+}) {
   const [isDragging, setIsDragging] = useState(false);
   const [isDeselecting, setIsDeselecting] = useState(false);
-
-  // Whether to show the left "Your Availability" or "Meeting Info"
   const [showLeftCalendar, setShowLeftCalendar] = useState(true);
 
-  // Store objects in selectedSlots: { slotKey, color }
-
-  const findSlot = (slotKey) => {
-    return selectedSlots.find(obj => obj.slotKey === slotKey);
-  };
-
-  // "drag state" reference
+  // For drag logic
   const dragStateRef = useRef({
     isDragging: false,
     isDeselecting: false,
@@ -24,76 +30,104 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
     lastDayIndex: null
   });
 
-  // Days / Hours
-  const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-
-  const startHour = parseInt(startTime.split(":")[0]);
-  const endHour = parseInt(endTime.split(":")[0]);
-
-  // Time slots from 9am to 9pm (13 hours)
-  const hours = Array.from({ length: endHour-startHour }, (_, i) => i + startHour);
-  
-  // Format hour to am/pm
-  const formatHour = (hour) => {
-    if (hour === 12) return "12pm";
-    return hour < 12 ? `${hour}am` : `${hour - 12}pm`;
+  // Helper to find a user-selected slot
+  const findSlot = (slotKey) => {
+    return selectedSlots.find(obj => obj.slotKey === slotKey);
   };
 
-  // Helper to get all cells between two points
+  // If the user’s startTime/endTime might be undefined, default them
+  const safeStart = startTime || "09:00";
+  const safeEnd = endTime || "21:00";
+  const startHour = parseInt(safeStart.split(":")[0]);
+  const endHour = parseInt(safeEnd.split(":")[0]);
+
+  // Days of the week
+  const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+  // Build hours array from startHour..endHour
+  const hours = Array.from({ length: endHour - startHour }, (_, i) => i + startHour);
+
+  // Convert 24-hour to e.g. "9am", "12pm"
+  const formatHour = (hour24) => {
+    if (hour24 === 12) return "12pm";
+    let h12 = hour24 % 12;
+    if (h12 === 0) h12 = 12;
+    const suffix = hour24 < 12 ? 'am' : 'pm';
+    return `${h12}${suffix}`;
+  };
+
+  // Check if a slotKey is in busySlots
+  const isBusySlot = (slotKey) => busySlots.includes(slotKey);
+
+  // Decide final color for a cell
+  const getCellColor = (slotKey) => {
+    const found = findSlot(slotKey);
+    if (found) {
+      // User manually selected => override color
+      return found.color; 
+    } else if (isBusySlot(slotKey)) {
+      // Busy from Google => gray
+      return '#cfcfcf';
+    } else {
+      // free
+      return 'transparent';
+    }
+  };
+
+  // Build a list of cells between two drag points
   const getCellsBetween = (start, end) => {
     if (!start || !end) return [];
     const cells = [];
 
-    const startHour = Math.min(start.hourIndex, end.hourIndex);
-    const endHour = Math.max(start.hourIndex, end.hourIndex);
-    const startDay = Math.min(start.dayIndex, end.dayIndex);
-    const endDay = Math.max(start.dayIndex, end.dayIndex);
+    const startHr = Math.min(start.hourIndex, end.hourIndex);
+    const endHr = Math.max(start.hourIndex, end.hourIndex);
+    const startDy = Math.min(start.dayIndex, end.dayIndex);
+    const endDy = Math.max(start.dayIndex, end.dayIndex);
 
-    // minuteIndex range
-    const startMinute = (start.hourIndex < end.hourIndex)
+    const startMin = (start.hourIndex < end.hourIndex)
       ? start.minuteIndex
       : (start.hourIndex > end.hourIndex
           ? end.minuteIndex
           : Math.min(start.minuteIndex, end.minuteIndex));
-    const endMinute = (start.hourIndex < end.hourIndex)
+    const endMin = (start.hourIndex < end.hourIndex)
       ? end.minuteIndex
       : (start.hourIndex > end.hourIndex
           ? start.minuteIndex
           : Math.max(start.minuteIndex, end.minuteIndex));
 
-    if (startHour === endHour) {
-      // Same hour
-      for (let d = startDay; d <= endDay; d++) {
-        for (let m = startMinute; m <= endMinute; m++) {
-          cells.push({ hourIndex: startHour, minuteIndex: m, dayIndex: d });
+    if (startHr === endHr) {
+      // same hour
+      for (let d = startDy; d <= endDy; d++) {
+        for (let m = startMin; m <= endMin; m++) {
+          cells.push({ hourIndex: startHr, minuteIndex: m, dayIndex: d });
         }
       }
     } else {
-      // Partial first hour
-      for (let d = startDay; d <= endDay; d++) {
-        for (let m = startMinute; m <= 3; m++) {
-          cells.push({ hourIndex: startHour, minuteIndex: m, dayIndex: d });
+      // partial first hour
+      for (let d = startDy; d <= endDy; d++) {
+        for (let m = startMin; m <= 3; m++) {
+          cells.push({ hourIndex: startHr, minuteIndex: m, dayIndex: d });
         }
       }
-      // Middle hours
-      for (let h = startHour + 1; h < endHour; h++) {
-        for (let d = startDay; d <= endDay; d++) {
+      // middle hours
+      for (let h = startHr + 1; h < endHr; h++) {
+        for (let d = startDy; d <= endDy; d++) {
           for (let m = 0; m <= 3; m++) {
             cells.push({ hourIndex: h, minuteIndex: m, dayIndex: d });
           }
         }
       }
-      // Partial last hour
-      for (let d = startDay; d <= endDay; d++) {
-        for (let m = 0; m <= endMinute; m++) {
-          cells.push({ hourIndex: endHour, minuteIndex: m, dayIndex: d });
+      // partial last hour
+      for (let d = startDy; d <= endDy; d++) {
+        for (let m = 0; m <= endMin; m++) {
+          cells.push({ hourIndex: endHr, minuteIndex: m, dayIndex: d });
         }
       }
     }
     return cells;
   };
 
-  // Add or remove multiple cells in one drag step
+  // Add/remove multiple cells in one drag step
   const processSelection = (hourIndex, minuteIndex, dayIndex) => {
     const currentCell = { hourIndex, minuteIndex, dayIndex };
     const lastCell = {
@@ -110,31 +144,31 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
     dragStateRef.current.lastDayIndex = dayIndex;
 
     if (cellsToProcess.length > 0) {
-      setSelectedSlots(prev => {
+      setSelectedSlots((prev) => {
         let newSlots = [...prev];
 
         if (dragStateRef.current.isDeselecting) {
-          // Remove each cell from newSlots
-          cellsToProcess.forEach(({ hourIndex, minuteIndex, dayIndex }) => {
+          // remove each cell
+          for (const { hourIndex, minuteIndex, dayIndex } of cellsToProcess) {
             const slotKey = `${hourIndex}-${minuteIndex}-${dayIndex}`;
             newSlots = newSlots.filter(obj => obj.slotKey !== slotKey);
-          });
+          }
         } else {
-          // Add each cell with the current color, if not already in
+          // add each cell with current color
           const color = ifNeeded ? '#FFEA9D' : '#637EE8';
-          cellsToProcess.forEach(({ hourIndex, minuteIndex, dayIndex }) => {
+          for (const { hourIndex, minuteIndex, dayIndex } of cellsToProcess) {
             const slotKey = `${hourIndex}-${minuteIndex}-${dayIndex}`;
             if (!newSlots.find(obj => obj.slotKey === slotKey)) {
               newSlots.push({ slotKey, color });
             }
-          });
+          }
         }
         return newSlots;
       });
     }
   };
 
-  // Mouse down on a cell
+  // On mousedown
   const handleMouseDown = (hourIndex, minuteIndex, dayIndex) => (e) => {
     e.preventDefault();
     const slotKey = `${hourIndex}-${minuteIndex}-${dayIndex}`;
@@ -150,13 +184,12 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
     setIsDragging(true);
     setIsDeselecting(alreadySelected);
 
+    // immediately toggle that cell
     if (alreadySelected) {
-      // Remove it
-      setSelectedSlots(prev => prev.filter(obj => obj.slotKey !== slotKey));
+      setSelectedSlots((prev) => prev.filter(obj => obj.slotKey !== slotKey));
     } else {
-      // Add it with current color
       const color = ifNeeded ? '#FFEA9D' : '#637EE8';
-      setSelectedSlots(prev => [...prev, { slotKey, color }]);
+      setSelectedSlots((prev) => [...prev, { slotKey, color }]);
     }
 
     // Attach global listeners
@@ -164,7 +197,7 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
     document.addEventListener('mouseup', handleMouseUp);
   };
 
-  // If user is dragging, process each new cell they hover over
+  // On mouseenter (while dragging)
   const handleCellHover = (hourIndex, minuteIndex, dayIndex) => () => {
     if (!dragStateRef.current.isDragging) return;
     processSelection(hourIndex, minuteIndex, dayIndex);
@@ -183,8 +216,7 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
         processSelection(h, m, d);
       }
     }
-  }, [ifNeeded]); 
-  // note: include ifNeeded so color is correct mid-drag if toggled
+  }, [ifNeeded]);
 
   // Global mouseup
   const handleMouseUp = useCallback(() => {
@@ -195,6 +227,7 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
     document.removeEventListener('mouseup', handleMouseUp);
   }, [handleMouseMove]);
 
+  // Cleanup on unmount
   useEffect(() => {
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
@@ -202,15 +235,6 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
     };
   }, [handleMouseMove, handleMouseUp]);
 
-  // Helper to get the color for a cell
-  const getCellColor = (slotKey) => {
-    const found = findSlot(slotKey);
-    return found ? found.color : 'transparent';
-  };
-
-  // ----------------------------------------
-  // RENDER
-  // ----------------------------------------
   return (
     <div className="my-layout-container">
       {/* LEFT SIDE (600×500) */}
@@ -230,7 +254,7 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
                   <div key={hourIndex} className="my-hour-container">
                     <div className="my-hour-label">{formatHour(hour)}</div>
                     <div className="my-minute-blocks">
-                      {[0, 1, 2, 3].map((minuteIndex) => {
+                      {[0,1,2,3].map((minuteIndex) => {
                         const rowKey = `r-${hourIndex}-${minuteIndex}`;
                         return (
                           <div key={rowKey} className="my-minute-row">
@@ -260,6 +284,7 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
             </div>
           </div>
         ) : (
+          /* Meeting info panel if hovered on the right */
           <div className="meeting-info-panel">
             <h2 className="meeting-title">Creative Labs Meeting</h2>
             <p className="meeting-datetime">February 7th, 2025 7:45AM</p>
@@ -275,7 +300,7 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
               </div>
               <div className="status-row">
                 <span className="status-circle available"></span>
-                <span>Philena Nguyen - Available</span>
+                <span>Phileena Nguyen - Available</span>
               </div>
             </div>
 
@@ -324,18 +349,16 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
               <div key={hourIndex} className="my-hour-container">
                 <div className="my-hour-label">{formatHour(hour)}</div>
                 <div className="my-minute-blocks">
-                  {[0, 1, 2, 3].map((minuteIndex) => (
+                  {[0,1,2,3].map((minuteIndex) => (
                     <div key={minuteIndex} className="my-minute-row">
                       {daysOfWeek.map((_, dayIndex) => {
                         const slotKey = `${hourIndex}-${minuteIndex}-${dayIndex}`;
-                        // If it's in selectedSlots, highlight it
-                        const found = findSlot(slotKey);
-                        const color = found ? found.color : 'transparent';
+                        const cellColor = getCellColor(slotKey);
                         return (
                           <div
                             key={dayIndex}
                             className="my-minute-cell"
-                            style={{ backgroundColor: color }}
+                            style={{ backgroundColor: cellColor }}
                           />
                         );
                       })}
@@ -355,6 +378,9 @@ InputCalendarPage.propTypes = {
   selectedSlots: PropTypes.array.isRequired,
   setSelectedSlots: PropTypes.func.isRequired,
   ifNeeded: PropTypes.bool.isRequired,
+  startTime: PropTypes.string,    // e.g. "09:00"
+  endTime: PropTypes.string,      // e.g. "17:00"
+  busySlots: PropTypes.array      // optional: e.g. ["9-2-3","10-1-0"] from Google
 };
 
 export default InputCalendarPage;
