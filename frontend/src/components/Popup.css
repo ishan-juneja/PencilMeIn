@@ -26,7 +26,7 @@
 
 .popup-header {
     text-align: center;
-    color: rgb(0,0,180);
+    color: #637EE8;
     margin-bottom: 0px;
     margin-top: 70px;
 }
@@ -47,7 +47,7 @@
     height: 50px;
     margin-top: 15px;
     border-radius: 30px;
-    font-size: 15px;
+    font-size: 20px;
 }
 
 #google {
@@ -63,4 +63,20 @@
 #manual {
     border: 0px;
     background-color: lightgrey;
+}
+
+.google-icon {
+    width: 50px;
+    height: 50px;
+    position: absolute;
+    left: 82px;
+    transform: translateY(calc(-27%));
+}
+
+.apple-icon {
+    width: 36px;
+    height: 36px;
+    position: absolute;
+    left: 87px;
+    transform: translateY(calc(-22%));
 }
