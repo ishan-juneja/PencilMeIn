@@ -2,9 +2,12 @@ import { useState, useRef, useCallback, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import './InputCalendar.css';
 
-function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTime, endTime }) {
+function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTime, endTime, dateArray}) {
   const [isDragging, setIsDragging] = useState(false);
   const [isDeselecting, setIsDeselecting] = useState(false);
+
+  // total # of users that put in their availability
+  const totalUsers = 3;
 
   // Whether to show the left "Your Availability" or "Meeting Info"
   const [showLeftCalendar, setShowLeftCalendar] = useState(true);
@@ -24,8 +27,14 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
     lastDayIndex: null
   });
 
-  // Days / Hours
-  const daysOfWeek = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  const formattedDates = dateArray.map(date => {
+    const d = new Date(date);
+    const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
+    const month = d.toLocaleDateString("en-US", { month: "2-digit" });
+    const day = d.toLocaleDateString("en-US", { day: "2-digit" });
+  
+    return `${weekday} ${month}/${day}`;
+  });
 
   const startHour = parseInt(startTime.split(":")[0]);
   const endHour = parseInt(endTime.split(":")[0]);
@@ -116,14 +125,24 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
         if (dragStateRef.current.isDeselecting) {
           // Remove each cell from newSlots
           cellsToProcess.forEach(({ hourIndex, minuteIndex, dayIndex }) => {
-            const slotKey = `${hourIndex}-${minuteIndex}-${dayIndex}`;
+            const hour = (startHour + hourIndex).toString().padStart(2, "0");
+            const minutes = (minuteIndex * 15).toString().padStart(2, "0");
+            const date = formattedDates[dayIndex];
+
+            const slotKey = `${hour}:${minutes} ${date}`;
             newSlots = newSlots.filter(obj => obj.slotKey !== slotKey);
           });
         } else {
           // Add each cell with the current color, if not already in
-          const color = ifNeeded ? '#FFEA9D' : '#637EE8';
+          const numAvailable = 2;       // replace with get function
+          const opacity = (1/totalUsers) * numAvailable;
+          const color = ifNeeded ? `rgba(255, 234, 157, ${opacity})` : `rgba(99, 126, 232, ${opacity})`;
           cellsToProcess.forEach(({ hourIndex, minuteIndex, dayIndex }) => {
-            const slotKey = `${hourIndex}-${minuteIndex}-${dayIndex}`;
+            const hour = (startHour + hourIndex).toString().padStart(2, "0");
+            const minutes = (minuteIndex * 15).toString().padStart(2, "0");
+            const date = formattedDates[dayIndex];
+
+            const slotKey = `${hour}:${minutes} ${date}`;
             if (!newSlots.find(obj => obj.slotKey === slotKey)) {
               newSlots.push({ slotKey, color });
             }
@@ -137,7 +156,12 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
   // Mouse down on a cell
   const handleMouseDown = (hourIndex, minuteIndex, dayIndex) => (e) => {
     e.preventDefault();
-    const slotKey = `${hourIndex}-${minuteIndex}-${dayIndex}`;
+    
+    const hour = (startHour + hourIndex).toString().padStart(2, "0");
+    const minutes = (minuteIndex * 15).toString().padStart(2, "0");
+    const date = formattedDates[dayIndex];
+    const slotKey = `${hour}:${minutes} ${date}`;
+
     const existing = findSlot(slotKey);
     const alreadySelected = !!existing;
 
@@ -155,7 +179,9 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
       setSelectedSlots(prev => prev.filter(obj => obj.slotKey !== slotKey));
     } else {
       // Add it with current color
-      const color = ifNeeded ? '#FFEA9D' : '#637EE8';
+      const numAvailable = 2;       // replace with get function
+      const opacity = (1/totalUsers) * numAvailable;
+      const color = ifNeeded ? `rgba(255, 234, 157, ${opacity})` : `rgba(99, 126, 232, ${opacity})`;
       setSelectedSlots(prev => [...prev, { slotKey, color }]);
     }
 
@@ -203,10 +229,10 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
   }, [handleMouseMove, handleMouseUp]);
 
   // Helper to get the color for a cell
-  const getCellColor = (slotKey) => {
-    const found = findSlot(slotKey);
-    return found ? found.color : 'transparent';
-  };
+  // const getCellColor = (slotKey) => {
+  //   const found = findSlot(slotKey);
+  //   return found ? found.color : 'transparent';
+  // };
 
   // ----------------------------------------
   // RENDER
@@ -221,9 +247,12 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
             <div className="my-availability-grid">
               <div className="my-availability-header">
                 <div className="my-time-column"></div>
-                {daysOfWeek.map((day, i) => (
-                  <div key={i} className="my-day-header">{day}</div>
-                ))}
+                {formattedDates.map((date, i) => {
+                  const [weekday, day] = date.split(" ");
+                  return (
+                    <div key={i} className="my-day-header">{weekday} <br /> {day}</div>
+                  );
+                })}
               </div>
               <div className="my-availability-body">
                 {hours.map((hour, hourIndex) => (
@@ -234,9 +263,20 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
                         const rowKey = `r-${hourIndex}-${minuteIndex}`;
                         return (
                           <div key={rowKey} className="my-minute-row">
-                            {daysOfWeek.map((_, dayIndex) => {
-                              const slotKey = `${hourIndex}-${minuteIndex}-${dayIndex}`;
-                              const cellColor = getCellColor(slotKey);
+                            {formattedDates.map((_, dayIndex) => {
+                              const hour = (startHour + hourIndex).toString().padStart(2, "0");
+                              const minutes = (minuteIndex * 15).toString().padStart(2, "0");
+                              const date = formattedDates[dayIndex];
+                  
+                              const slotKey = `${hour}:${minutes} ${date}`;
+
+                              const found = findSlot(slotKey);
+                              let color = found ? found.color : 'transparent';
+
+                              if (color.startsWith("rgba")) {
+                                color = color.replace(/rgba\((\d+), (\d+), (\d+), [\d.]+\)/, "rgb($1, $2, $3)");
+                              }
+                              
                               return (
                                 <div
                                   key={dayIndex}
@@ -244,7 +284,7 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
                                   data-minute={minuteIndex}
                                   data-day={dayIndex}
                                   className="my-minute-cell"
-                                  style={{ backgroundColor: cellColor }}
+                                  style={{ backgroundColor: color }}
                                   onMouseDown={handleMouseDown(hourIndex, minuteIndex, dayIndex)}
                                   onMouseEnter={handleCellHover(hourIndex, minuteIndex, dayIndex)}
                                 />
@@ -315,9 +355,12 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
         <div className="my-availability-grid">
           <div className="my-availability-header">
             <div className="my-time-column"></div>
-            {daysOfWeek.map((day, i) => (
-              <div key={i} className="my-day-header">{day}</div>
-            ))}
+            {formattedDates.map((date, i) => {
+              const [weekday, day] = date.split(" ");
+              return (
+                <div key={i} className="my-day-header">{weekday} <br /> {day}</div>
+              );
+            })}
           </div>
           <div className="my-availability-body">
             {hours.map((hour, hourIndex) => (
@@ -326,8 +369,13 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
                 <div className="my-minute-blocks">
                   {[0, 1, 2, 3].map((minuteIndex) => (
                     <div key={minuteIndex} className="my-minute-row">
-                      {daysOfWeek.map((_, dayIndex) => {
-                        const slotKey = `${hourIndex}-${minuteIndex}-${dayIndex}`;
+                      {formattedDates.map((_, dayIndex) => {
+
+                        const hour = (startHour + hourIndex).toString().padStart(2, "0");
+                        const minutes = (minuteIndex * 15).toString().padStart(2, "0");
+                        const date = formattedDates[dayIndex];
+
+                        const slotKey = `${hour}:${minutes} ${date}`;
                         // If it's in selectedSlots, highlight it
                         const found = findSlot(slotKey);
                         const color = found ? found.color : 'transparent';

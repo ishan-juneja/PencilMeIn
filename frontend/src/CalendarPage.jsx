@@ -67,6 +67,7 @@ export default function CalendarPage() {
           ifNeeded={ifNeeded}
           endTime = {endTime}
           startTime = {startTime}
+          dateArray = {datesSelected}
         />
 
         <div className="my-controls-container">
