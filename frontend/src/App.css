@@ -1,0 +1,149 @@
+/* @tailwind base;
+@tailwind components;
+@tailwind utilities;  */
+
+:root {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  --primary-color: #5973DE;
+  --hover-color: #4a5eb3;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: #FFFFFF;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+#root {
+  width: 100%;
+  padding: 1rem;
+}
+
+.logo {
+  position: fixed;
+  top: 2vw;   /* 2% of viewport width from the top */
+  left: 2vw;  /* 2% of viewport width from the left */
+  width: 5vw; /* 5% of the viewport width */
+  height: auto; /* Maintaining aspect ratio */
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 14vh;
+  margin-left: 4vw;
+}
+
+.pencil-me-in {
+  font-size: 1.25rem;
+  color: #5973DE;
+} 
+
+.event-name-input {
+  height: 5vh;
+  width: 90vw;
+}
+
+/* Calendar styles */
+.calendar {
+  width: 100%;
+  border-radius: 0.5rem;
+  border: 1px solid #E5E7EB;
+}
+
+.calendar .calendar-header {
+  background-color: #F9FAFB;
+  padding: 1rem;
+  border-bottom: 1px solid #E5E7EB;
+}
+
+.calendar .calendar-grid {
+  padding: 1rem;
+}
+
+.calendar .calendar-day {
+  width: 2.5rem;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.calendar .calendar-day:hover {
+  background-color: #F3F4F6;
+}
+
+.calendar .calendar-day.selected {
+  background-color: #3B82F6;
+  color: white;
+}
+
+/* Layout */
+.layout-container {
+  display: flex;
+  gap: 12rem;
+  margin-top: 2rem;
+  align-items: flex-start;
+  margin-left: 15vw;
+}
+
+.calendar-side {
+  flex: 0 0 450px; 
+  margin-top: 3rem;
+}
+
+.dropdowns-side {
+  flex: 0 0 350px;
+  margin-top: 3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;  
+}
+
+.large-calendar .p-datepicker {
+  padding: 0.5rem;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  width: 450px;  /* Match calendar-side width */
+  font-size: 1.1em;
+}
+
+.large-calendar .p-datepicker table {
+  width: 100%;
+}
+
+.large-calendar .p-datepicker table td,
+.large-calendar .p-datepicker table th {
+  padding: 0.4rem;
+}
+
+.large-calendar .p-datepicker table td > span {
+  width: 2.8rem;
+  height: 2.8rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.large-calendar .p-datepicker table td.p-highlight > span {
+  background-color: #5973DE !important;
+  color: #ffffff !important;
+  border: none !important;
+}
+
+.large-calendar .p-datepicker table td.p-datepicker-today > span {
+  /* border: 1px solid #5973DE; */
+  font-weight: bold;
+  color: #5973DE;
+}
+
+.large-calendar .p-datepicker .p-datepicker-header {
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid #e0e0e0;
+}
