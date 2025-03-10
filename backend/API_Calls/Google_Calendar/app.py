@@ -226,7 +226,6 @@ def calendar_api_request():
   #calendar availability for people (using the user's calendar data)
   #function to add event
   #work on availability algo
-  #
 
 
 if __name__ == '__main__':

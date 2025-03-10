@@ -155,11 +155,13 @@
 
 /* Header row (days of week) */
 .my-availability-header {
+  display: flex;
+  justify-content: space-between;
   display: grid;
-  grid-template-columns: 60px repeat(7, 1fr);
+  grid-template-columns: 60px repeat(auto-fit, minmax(70px, 1fr));
   background-color: #f5f5f5;
   border-bottom: 1px solid #ddd;
-  height: 30px; /* space for day labels */
+  height: 50px; /* space for day labels */
 }
 
 .my-time-column {

@@ -1,4 +1,9 @@
 //this file exports calendar data from the google oauth (server_side)
+import db from "../../src/firebaseClient";
+
+
+
+
 
 function fetchCalendarData() {
     //get calendar data from app.py
@@ -17,6 +22,8 @@ function fetchCalendarData() {
         console.error('Error fetching calendar data: ', error);
       });
   }
+
+  addGCalData.addEventListener()
   
   function storeEventsInFirebase(events) {
     const userId = firebase.auth().currentUser.uid;
