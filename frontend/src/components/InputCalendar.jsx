@@ -6,8 +6,128 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
   const [isDragging, setIsDragging] = useState(false);
   const [isDeselecting, setIsDeselecting] = useState(false);
 
+  const totalUsers = 3; // Hard coded, should be from GET request
+
+
+  const availability_dict = {
+    "2025-03-11": {
+      'availability': [
+        {'start': "09:00 AM", end: "09:30 AM", available: 1},
+        {'start': "10:00 AM", end: "10:30 AM", available: 1}
+      ]
+    },
+    "2025-03-12": {
+      'availability': [
+        {'start': "11:00 AM", end: "11:15 AM", available: 1},
+        {'start': "11:30 AM", end: "11:45 AM", available: 1}
+      ]
+    }
+  }
+
+  const right_dict = {
+    "2025-03-13": {
+      'availability': [
+        {'start': "09:00 AM", end: "09:30 AM", available: 1},
+        {'start': "10:00 AM", end: "10:30 AM", available: 1}
+      ]
+    },
+    "2025-03-14": {
+      'availability': [
+        {'start': "11:00 AM", end: "11:15 AM", available: 1},
+        {'start': "11:30 AM", end: "11:45 AM", available: 1}
+      ]
+    }
+  }
+
+  useEffect(() => {
+  // --- 1) Build LEFT slots from availability_dict ---
+  const newLeftSlots = [];
+
+  for (const [dateKey, dateObject] of Object.entries(availability_dict)) {
+    const d = new Date(dateKey + "T12:00:00");
+    const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
+    const month   = d.toLocaleDateString("en-US", { month: "2-digit" });
+    const day     = d.toLocaleDateString("en-US", { day: "2-digit" });
+    const dateLabel = `${weekday} ${month}/${day}`;
+
+    const blocks = dateObject.availability; 
+    for (const block of blocks) {
+      const [timePart, ampm] = block.start.split(" ");
+      let [hourStr, minStr]  = timePart.split(":");
+      let hour = parseInt(hourStr, 10);
+
+      // Convert to 24hr
+      if (ampm === "PM" && hour !== 12) hour += 12;
+      if (ampm === "AM" && hour === 12) hour = 0; // midnight edge case
+
+      const hrPadded = String(hour).padStart(2, "0");
+      const slotKey  = `${hrPadded}:${minStr} ${dateLabel}`;
+
+      // Use grey color (or any color you want)
+      newLeftSlots.push({
+        slotKey,
+        color: "rgba(128,128,128,1)"
+      });
+    }
+  }
+
+  // Put the LEFT slots into selectedSlots (left calendar)
+  setSelectedSlots(prev => [...prev, ...newLeftSlots]);
+
+  // --- 2) Build RIGHT slots from right_dict ---
+  const newRightSlots = [];
+
+  for (const [dateKey, dateObject] of Object.entries(right_dict)) {
+    const d = new Date(dateKey + "T12:00:00");
+    const weekday = d.toLocaleDateString("en-US", { weekday: "short" });
+    const month   = d.toLocaleDateString("en-US", { month: "2-digit" });
+    const day     = d.toLocaleDateString("en-US", { day: "2-digit" });
+    const dateLabel = `${weekday} ${month}/${day}`;
+
+    const blocks = dateObject.availability; 
+    for (const block of blocks) {
+      const [timePart, ampm] = block.start.split(" ");
+      let [hourStr, minStr]  = timePart.split(":");
+      let hour = parseInt(hourStr, 10);
+
+      // Convert to 24hr
+      if (ampm === "PM" && hour !== 12) hour += 12;
+      if (ampm === "AM" && hour === 12) hour = 0;
+
+      const hrPadded = String(hour).padStart(2, "0");
+      const slotKey  = `${hrPadded}:${minStr} ${dateLabel}`;
+
+      const numAvailable = 2;       // replace with get function
+      const opacity = (1/totalUsers) * numAvailable;
+      const color = ifNeeded ? `rgba(255, 234, 157, ${opacity})` : `rgba(99, 126, 232, ${opacity})`;
+
+      newRightSlots.push({
+        slotKey,
+        color: color  // Hard coded color
+      });
+    }
+  }
+
+  // Put the RIGHT slots into groupAvailability (right calendar)
+  setGroupAvailability(prev => [...prev, ...newRightSlots]);
+
+  // Run only once on mount
+}, []);
+
+  
+  
+
+  // ======================================================
+
+  const [groupAvailability, setGroupAvailability] = useState([]);
+
+  const findGroupSlot = (slotKey) => {
+    return groupAvailability.find(obj => obj.slotKey === slotKey);
+  };
+
+
   // total # of users that put in their availability
-  const totalUsers = 3;
+  
 
   // Whether to show the left "Your Availability" or "Meeting Info"
   const [showLeftCalendar, setShowLeftCalendar] = useState(true);
@@ -377,8 +497,9 @@ function InputCalendarPage({ selectedSlots, setSelectedSlots, ifNeeded, startTim
 
                         const slotKey = `${hour}:${minutes} ${date}`;
                         // If it's in selectedSlots, highlight it
-                        const found = findSlot(slotKey);
+                        const found = findGroupSlot(slotKey);
                         const color = found ? found.color : 'transparent';
+
                         return (
                           <div
                             key={dayIndex}
