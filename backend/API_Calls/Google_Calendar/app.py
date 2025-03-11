@@ -14,7 +14,7 @@ from collections import defaultdict
 import firebase_admin
 from firebase_admin import firestore, credentials
 import uuid
-
+from flask_cors import CORS
 
 
 cred = credentials.Certificate("pencilmein-e7ac3-firebase-adminsdk-fbsvc-e3d41e63ed.json")
@@ -37,6 +37,7 @@ API_VERSION = 'v3'
 
 app = flask.Flask(__name__) 
 app.secret_key = os.getenv("SECRET_KEY")
+CORS(app, origins='*', allow_headers='*')
 
 
 
@@ -279,6 +280,7 @@ def store_calendar(events):
 #authorize for google
 @app.route('/authorize')
 def google_authorize():
+    print("WE ARE HERE")
     flow = google_auth_oauthlib.flow.Flow.from_client_secrets_file(CLIENT_SECRETS_FILE, scopes=SCOPES)
     #the URI created here will match the authorized redirect URI from the OAuth 2.0 client configuration in the Google Cloud Console
     flow.redirect_uri = flask.url_for('oauth2callback', _external=True)
@@ -348,7 +350,12 @@ def oauth2callback():
     print(current_dict['value'])
 
 
+    flask.session.permanent = True
     flask.session['email'] = current_dict['value']
+
+
+    print("HI")
+    print(flask.session['email'])
 
     # people_service = build('people', 'v1', credentials=creds)
     # profile = people_service.people().get(
@@ -405,7 +412,7 @@ def oauth2callback():
 
     features = check_granted_scopes(creds_dict)
     flask.session['features'] = features
-    return flask.redirect('/')
+    return flask.redirect('http://localhost:5001/calendar')
 
 
 
@@ -416,6 +423,11 @@ def add_user_availability(time_arr):
     availability_ref.document("availability").set(time_arr)
 
 
+@app.route("/person")
+def return_persons_availability():
+    print(flask.session['email'])
+    user_ref = db.collection("users").document(flask.session["email"])
+    return jsonify(user_ref.collection('availability').document('availability').get().to_dict())
 
 
 def compare_people(people):
@@ -608,6 +620,10 @@ def calendar_api_request():
     else:
         return ('<p>User did not grant the Google Calendar read permission</p>')
 
+@app.route("/test")
+def test():
+    print("PIRATE KING")
+
 
 
 if __name__ == '__main__':
@@ -621,4 +637,4 @@ if __name__ == '__main__':
 
   # Specify a hostname and port that are set as a valid redirect URI
   # for your API project in the Google API Console.
-  app.run(host='0.0.0.0', port=5000, debug=True)
+  app.run(host='0.0.0.0', port=5000, debug=False)

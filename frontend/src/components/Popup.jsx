@@ -12,7 +12,8 @@ function Popup(props) {
             // OR use a library like react-google-login
             
             // Placeholder for the actual implementation
-            window.location.href = '/api/auth/google'; 
+            window.location.href = 'http://localhost:5000/authorize'; 
+            console.log("SIGN IN TO GOOGlE!");
             
             // 1. Redirect to Google auth
             // 2. Handle the callback with tokens
